@@ -1,5 +1,5 @@
 // ===== Configuration =====
-const API_URL = import.meta.env.VITE_API_URL || "https://fitness-tracker-api-fms7.onrender.com/api";
+const API_URL = "/api";
 
 // ===== Token Management =====
 function getToken() {
@@ -140,19 +140,6 @@ function getStatusBadge(status) {
   var badgeClass = "badge-" + status;
   return '<span class="badge ' + badgeClass + '">' + status + "</span>";
 }
-
-window.logout = logout;
-window.apiRequest = apiRequest;
-window.getUser = getUser;
-window.setUser = setUser;
-window.setToken = setToken;
-window.isLoggedIn = isLoggedIn;
-window.requireAuth = requireAuth;
-window.formatDate = formatDate;
-window.showToast = showToast;
-window.updateNavbar = updateNavbar;
-window.getStatusBadge = getStatusBadge;
-window.formatDateForInput = formatDateForInput;
 
 // ===== Initialize navbar on every page =====
 document.addEventListener("DOMContentLoaded", function () {
