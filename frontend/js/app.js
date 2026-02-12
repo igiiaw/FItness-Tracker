@@ -1,5 +1,5 @@
 // ===== Configuration =====
-const API_URL = "https://fitness-tracker-api-fms7.onrender.com\n";
+const API_URL = "https://fitness-tracker-api-fms7.onrender.com";
 
 // ===== Token Management =====
 function getToken() {
