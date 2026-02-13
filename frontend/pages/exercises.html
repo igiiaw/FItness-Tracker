@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Progress - FitTrack</title>
+    <title>Exercises - FitTrack</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="/css/style.css" />
@@ -27,9 +27,9 @@
             <div id="userNav" class="nav-group" style="display: none">
               <li class="nav-item"><a class="nav-link" href="/pages/dashboard.html">Dashboard</a></li>
               <li class="nav-item"><a class="nav-link" href="/pages/workouts.html">Workouts</a></li>
-              <li class="nav-item"><a class="nav-link" href="/pages/exercises.html">Exercises</a></li>
+              <li class="nav-item"><a class="nav-link active" href="/pages/exercises.html">Exercises</a></li>
               <li class="nav-item"><a class="nav-link" href="/pages/goals.html">Goals</a></li>
-              <li class="nav-item"><a class="nav-link active" href="/pages/progress.html">Progress</a></li>
+              <li class="nav-item"><a class="nav-link" href="/pages/progress.html">Progress</a></li>
               <li class="nav-item"><a class="nav-link" href="/pages/profile.html">Profile</a></li>
               <li class="nav-item" id="adminNav" style="display: none"><a class="nav-link" href="/pages/admin.html">Admin</a></li>
               <li class="nav-item ms-2">
@@ -46,100 +46,113 @@
       </div>
     </nav>
 
-    <!-- Progress Content -->
+    <!-- Exercises Content -->
     <section class="section">
       <div class="container">
         <div class="d-flex justify-content-between align-items-center mb-4">
           <h2 class="section-title mb-0">
-            <i class="bi bi-graph-up-arrow"></i> My Progress
+            <i class="bi bi-list-check"></i> My Exercises
           </h2>
-          <button class="btn btn-primary" onclick="openProgressModal()">
-            <i class="bi bi-plus-lg"></i> Log Progress
+          <button class="btn btn-primary" onclick="openExerciseModal()">
+            <i class="bi bi-plus-lg"></i> Add Exercise
           </button>
         </div>
 
-        <!-- Summary Cards -->
-        <div class="row g-4 mb-4" id="progressSummary" style="display: none">
-          <div class="col-md-4 col-6">
-            <div class="stat-card bg-workouts">
-              <h3 id="latestWeight">--</h3>
-              <p>Latest Weight (kg)</p>
-            </div>
-          </div>
-          <div class="col-md-4 col-6">
-            <div class="stat-card bg-exercises">
-              <h3 id="latestBodyFat">--</h3>
-              <p>Latest Body Fat (%)</p>
-            </div>
-          </div>
-          <div class="col-md-4 col-6">
-            <div class="stat-card bg-goals">
-              <h3 id="totalEntries">0</h3>
-              <p>Total Entries</p>
-            </div>
-          </div>
-        </div>
+        <!-- Filter Tabs -->
+        <ul class="nav nav-tabs mb-3" id="exerciseTabs">
+          <li class="nav-item">
+            <a class="nav-link active" href="#" onclick="filterExercises('all', this)">All</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#" onclick="filterExercises('strength', this)">Strength</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#" onclick="filterExercises('cardio', this)">Cardio</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#" onclick="filterExercises('flexibility', this)">Flexibility</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#" onclick="filterExercises('balance', this)">Balance</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#" onclick="filterExercises('other', this)">Other</a>
+          </li>
+        </ul>
 
         <div class="card">
           <div class="card-body">
             <div class="table-responsive">
-              <table class="table table-hover" id="progressTable" style="display: none">
+              <table class="table table-hover" id="exercisesTable" style="display: none">
                 <thead>
                   <tr>
-                    <th>Date</th>
+                    <th>Name</th>
+                    <th>Category</th>
+                    <th>Sets / Reps</th>
                     <th>Weight (kg)</th>
-                    <th>Body Fat (%)</th>
-                    <th>Mood</th>
-                    <th>Notes</th>
+                    <th>Duration (min)</th>
+                    <th>Date</th>
                     <th>Actions</th>
                   </tr>
                 </thead>
-                <tbody id="progressBody"></tbody>
+                <tbody id="exercisesBody"></tbody>
               </table>
             </div>
-            <div id="progressEmpty" class="empty-state">
-              <i class="bi bi-graph-up-arrow"></i>
-              <p>No progress entries yet. Click "Log Progress" to get started!</p>
+            <div id="exercisesEmpty" class="empty-state">
+              <i class="bi bi-list-check"></i>
+              <p>No exercises found. Click "Add Exercise" to get started!</p>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Progress Modal -->
-    <div class="modal fade" id="progressModal" tabindex="-1">
+    <!-- Exercise Modal -->
+    <div class="modal fade" id="exerciseModal" tabindex="-1">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="progressModalTitle">Log Progress</h5>
+            <h5 class="modal-title" id="exerciseModalTitle">Add Exercise</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
           </div>
-          <form id="progressForm">
+          <form id="exerciseForm">
             <div class="modal-body">
-              <input type="hidden" id="progressId" />
+              <input type="hidden" id="exerciseId" />
+              <div class="mb-3">
+                <label class="form-label">Name</label>
+                <input type="text" class="form-control" id="exerciseName" required />
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Category</label>
+                <select class="form-select" id="exerciseCategory">
+                  <option value="strength">Strength</option>
+                  <option value="cardio">Cardio</option>
+                  <option value="flexibility">Flexibility</option>
+                  <option value="balance">Balance</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
               <div class="row">
-                <div class="col-6 mb-3">
-                  <label class="form-label">Weight (kg)</label>
-                  <input type="number" class="form-control" id="progressWeight" step="0.1" min="0" />
+                <div class="col-4 mb-3">
+                  <label class="form-label">Sets</label>
+                  <input type="number" class="form-control" id="exerciseSets" min="0" value="0" />
                 </div>
-                <div class="col-6 mb-3">
-                  <label class="form-label">Body Fat (%)</label>
-                  <input type="number" class="form-control" id="progressBodyFat" step="0.1" min="0" max="100" />
+                <div class="col-4 mb-3">
+                  <label class="form-label">Reps</label>
+                  <input type="number" class="form-control" id="exerciseReps" min="0" value="0" />
+                </div>
+                <div class="col-4 mb-3">
+                  <label class="form-label">Weight (kg)</label>
+                  <input type="number" class="form-control" id="exerciseWeight" min="0" value="0" />
                 </div>
               </div>
               <div class="mb-3">
-                <label class="form-label">Mood</label>
-                <select class="form-select" id="progressMood">
-                  <option value="great">Great</option>
-                  <option value="good">Good</option>
-                  <option value="okay" selected>Okay</option>
-                  <option value="bad">Bad</option>
-                  <option value="terrible">Terrible</option>
-                </select>
+                <label class="form-label">Duration (min)</label>
+                <input type="number" class="form-control" id="exerciseDuration" min="0" value="0" />
               </div>
               <div class="mb-3">
                 <label class="form-label">Notes</label>
-                <textarea class="form-control" id="progressNotes" rows="2"></textarea>
+                <textarea class="form-control" id="exerciseNotes" rows="2"></textarea>
               </div>
             </div>
             <div class="modal-footer">
@@ -160,6 +173,6 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="/js/app.js"></script>
-    <script src="/js/progress.js"></script>
+    <script src="/js/exercises.js"></script>
   </body>
 </html>

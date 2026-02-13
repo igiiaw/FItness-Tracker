@@ -27,6 +27,7 @@
             <div id="userNav" class="nav-group" style="display: none">
               <li class="nav-item"><a class="nav-link active" href="/pages/dashboard.html">Dashboard</a></li>
               <li class="nav-item"><a class="nav-link" href="/pages/workouts.html">Workouts</a></li>
+              <li class="nav-item"><a class="nav-link" href="/pages/exercises.html">Exercises</a></li>
               <li class="nav-item"><a class="nav-link" href="/pages/goals.html">Goals</a></li>
               <li class="nav-item"><a class="nav-link" href="/pages/progress.html">Progress</a></li>
               <li class="nav-item"><a class="nav-link" href="/pages/profile.html">Profile</a></li>
@@ -129,9 +130,12 @@
             <div class="card">
               <div class="card-header d-flex justify-content-between align-items-center">
                 <span><i class="bi bi-list-check"></i> Recent Exercises</span>
-                <button class="btn btn-sm btn-outline-primary" onclick="openExerciseModal()">
-                  <i class="bi bi-plus"></i> Add Exercise
-                </button>
+                <div>
+                  <a href="/pages/exercises.html" class="btn btn-sm btn-outline-secondary me-1">View All</a>
+                  <button class="btn btn-sm btn-outline-primary" onclick="openExerciseModal()">
+                    <i class="bi bi-plus"></i> Add Exercise
+                  </button>
+                </div>
               </div>
               <div class="card-body">
                 <div id="recentExercises">
