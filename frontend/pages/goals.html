@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Workouts - FitTrack</title>
+    <title>Goals - FitTrack</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="/css/style.css" />
@@ -26,8 +26,8 @@
             </div>
             <div id="userNav" class="nav-group" style="display: none">
               <li class="nav-item"><a class="nav-link" href="/pages/dashboard.html">Dashboard</a></li>
-              <li class="nav-item"><a class="nav-link active" href="/pages/workouts.html">Workouts</a></li>
-              <li class="nav-item"><a class="nav-link" href="/pages/goals.html">Goals</a></li>
+              <li class="nav-item"><a class="nav-link" href="/pages/workouts.html">Workouts</a></li>
+              <li class="nav-item"><a class="nav-link active" href="/pages/goals.html">Goals</a></li>
               <li class="nav-item"><a class="nav-link" href="/pages/progress.html">Progress</a></li>
               <li class="nav-item"><a class="nav-link" href="/pages/profile.html">Profile</a></li>
               <li class="nav-item" id="adminNav" style="display: none"><a class="nav-link" href="/pages/admin.html">Admin</a></li>
@@ -45,97 +45,104 @@
       </div>
     </nav>
 
-    <!-- Workouts Content -->
+    <!-- Goals Content -->
     <section class="section">
       <div class="container">
         <div class="d-flex justify-content-between align-items-center mb-4">
           <h2 class="section-title mb-0">
-            <i class="bi bi-activity"></i> My Workouts
+            <i class="bi bi-bullseye"></i> My Goals
           </h2>
-          <button class="btn btn-primary" onclick="openWorkoutModal()">
-            <i class="bi bi-plus-lg"></i> Add Workout
+          <button class="btn btn-primary" onclick="openGoalModal()">
+            <i class="bi bi-plus-lg"></i> Add Goal
           </button>
         </div>
+
+        <!-- Filter Tabs -->
+        <ul class="nav nav-tabs mb-3" id="goalTabs">
+          <li class="nav-item">
+            <a class="nav-link active" href="#" onclick="filterGoals('all', this)">All</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#" onclick="filterGoals('active', this)">Active</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#" onclick="filterGoals('completed', this)">Completed</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#" onclick="filterGoals('failed', this)">Failed</a>
+          </li>
+        </ul>
 
         <div class="card">
           <div class="card-body">
             <div class="table-responsive">
-              <table class="table table-hover" id="workoutsTable" style="display: none">
+              <table class="table table-hover" id="goalsTable" style="display: none">
                 <thead>
                   <tr>
                     <th>Title</th>
-                    <th>Type</th>
-                    <th>Duration</th>
-                    <th>Calories</th>
-                    <th>Date</th>
+                    <th>Progress</th>
+                    <th>Target</th>
+                    <th>Deadline</th>
                     <th>Status</th>
                     <th>Actions</th>
                   </tr>
                 </thead>
-                <tbody id="workoutsBody"></tbody>
+                <tbody id="goalsBody"></tbody>
               </table>
             </div>
-            <div id="workoutsEmpty" class="empty-state">
-              <i class="bi bi-activity"></i>
-              <p>No workouts found. Click "Add Workout" to get started!</p>
+            <div id="goalsEmpty" class="empty-state">
+              <i class="bi bi-bullseye"></i>
+              <p>No goals found. Click "Add Goal" to get started!</p>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Workout Modal -->
-    <div class="modal fade" id="workoutModal" tabindex="-1">
+    <!-- Goal Modal -->
+    <div class="modal fade" id="goalModal" tabindex="-1">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="workoutModalTitle">Add Workout</h5>
+            <h5 class="modal-title" id="goalModalTitle">Add Goal</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
           </div>
-          <form id="workoutForm">
+          <form id="goalForm">
             <div class="modal-body">
-              <input type="hidden" id="workoutId" />
+              <input type="hidden" id="goalId" />
               <div class="mb-3">
                 <label class="form-label">Title</label>
-                <input type="text" class="form-control" id="workoutTitle" required />
+                <input type="text" class="form-control" id="goalTitle" required />
               </div>
               <div class="mb-3">
                 <label class="form-label">Description</label>
-                <textarea class="form-control" id="workoutDescription" rows="2"></textarea>
-              </div>
-              <div class="row">
-                <div class="col-6 mb-3">
-                  <label class="form-label">Type</label>
-                  <select class="form-select" id="workoutType">
-                    <option value="cardio">Cardio</option>
-                    <option value="strength">Strength</option>
-                    <option value="flexibility">Flexibility</option>
-                    <option value="balance">Balance</option>
-                    <option value="other">Other</option>
-                  </select>
-                </div>
-                <div class="col-6 mb-3">
-                  <label class="form-label">Status</label>
-                  <select class="form-select" id="workoutStatus">
-                    <option value="planned">Planned</option>
-                    <option value="completed">Completed</option>
-                    <option value="skipped">Skipped</option>
-                  </select>
-                </div>
+                <textarea class="form-control" id="goalDescription" rows="2"></textarea>
               </div>
               <div class="row">
                 <div class="col-4 mb-3">
-                  <label class="form-label">Duration (min)</label>
-                  <input type="number" class="form-control" id="workoutDuration" min="1" required />
+                  <label class="form-label">Target</label>
+                  <input type="number" class="form-control" id="goalTarget" min="0" required />
                 </div>
                 <div class="col-4 mb-3">
-                  <label class="form-label">Calories</label>
-                  <input type="number" class="form-control" id="workoutCalories" min="0" value="0" />
+                  <label class="form-label">Current</label>
+                  <input type="number" class="form-control" id="goalCurrent" min="0" value="0" />
                 </div>
                 <div class="col-4 mb-3">
-                  <label class="form-label">Date</label>
-                  <input type="date" class="form-control" id="workoutDate" />
+                  <label class="form-label">Unit</label>
+                  <input type="text" class="form-control" id="goalUnit" placeholder="kg, km, etc." required />
                 </div>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Deadline</label>
+                <input type="date" class="form-control" id="goalDeadline" required />
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Status</label>
+                <select class="form-select" id="goalStatus">
+                  <option value="active">Active</option>
+                  <option value="completed">Completed</option>
+                  <option value="failed">Failed</option>
+                </select>
               </div>
             </div>
             <div class="modal-footer">
@@ -156,6 +163,6 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="/js/app.js"></script>
-    <script src="/js/workouts.js"></script>
+    <script src="/js/goals.js"></script>
   </body>
 </html>
